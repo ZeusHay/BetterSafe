@@ -15,13 +15,14 @@
 // @grant        GM_deleteValue
 // @grant        GM_xmlhttpRequest
 // @connect      github.com
+// @connect      raw.githubusercontent.com
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    const CURRENT_VERSION = '1.5';
-    const VERSION_CHECK_URL = 'https://github.com/ZeusHay/BetterSafe/raw/main/betterbetsafe.version.json';
+    const CURRENT_VERSION = '1.6';
+    const VERSION_CHECK_URL = 'https://raw.githubusercontent.com/ZeusHay/BetterSafe/main/betterbetsafe.version.json';
 
     const SPORTS_LIST = [
         'Todos',
@@ -428,6 +429,24 @@
         }
     `);
 
+    function isNewerVersion(currentVersion, remoteVersion) {
+        const currentParts = currentVersion.split('.').map(Number);
+        const remoteParts = remoteVersion.split('.').map(Number);
+        
+        for (let i = 0; i < Math.max(currentParts.length, remoteParts.length); i++) {
+            const currentPart = currentParts[i] || 0;
+            const remotePart = remoteParts[i] || 0;
+            
+            if (remotePart > currentPart) {
+                return true;
+            } else if (remotePart < currentPart) {
+                return false;
+            }
+        }
+        
+        return false;
+    }    
+
     function checkForUpdates() {
         try {
             GM_xmlhttpRequest({
@@ -437,7 +456,8 @@
                     try {
                         const versionInfo = JSON.parse(response.responseText);
                         
-                        if (versionInfo && versionInfo.version && versionInfo.version !== CURRENT_VERSION) {
+                        if (versionInfo && versionInfo.version && isNewerVersion(CURRENT_VERSION, versionInfo.version)) {
+                            console.log('Nova versão disponível!');
                             showUpdateNotification(versionInfo);
                         }
                     } catch (e) {
