@@ -1,5 +1,5 @@
 {
-    "version": "1.6",
-    "changelog": "Teste de Funcionabilidade",
+    "version": "1.0.1",
+    "changelog": "- Update Inicial & Sistema de Filtros Aprimorados",
     "downloadUrl": "https://github.com/ZeusHay/BetterSafe/raw/refs/heads/main/betterbetsafe.user.js"
 }

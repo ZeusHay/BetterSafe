@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterSafe by Zeus
 // @namespace    http://github.com/ZeusHay/BetterSafe
-// @version      1.5
+// @version      1.0.1
 // @description  Filtro avançado para apostas no BetSafe com interface personalizada por categorias e interatividade melhorada
 // @author       Zeus
 // @match        https://betsafepro.com.br/*
@@ -21,7 +21,7 @@
 (function() {
     'use strict';
 
-    const CURRENT_VERSION = '1.6';
+    const CURRENT_VERSION = '1.0.1';
     const VERSION_CHECK_URL = 'https://raw.githubusercontent.com/ZeusHay/BetterSafe/main/betterbetsafe.version.json';
 
     const SPORTS_LIST = [
@@ -74,13 +74,13 @@
     ];
 
     const DEFAULT_FILTERS = {
-        'AH': true,
-        'EH': true,
-        'Corners': true,
-        'Win By Exactly': true,
-        'Dbl Faults': true,
-        'Offsides': true,
-        'One scoreless': true
+        'AH': false,
+        'EH': false,
+        'Corners': false,
+        'Win By Exactly': false,
+        'Dbl Faults': false,
+        'Offsides': false,
+        'One scoreless': false
     };
 
     let categorySettings = {};
@@ -507,11 +507,11 @@
     function loadSettings() {
         try {
             categorySettings = GM_getValue('betsure_categorySettings');
-
+    
             if (!categorySettings || typeof categorySettings !== 'object') {
                 categorySettings = {};
             }
-
+    
             SPORTS_LIST.forEach(sport => {
                 if (!categorySettings[sport]) {
                     categorySettings[sport] = {
@@ -521,17 +521,21 @@
                     };
                 } else {
                     if (sport === 'Todos') {
-                        categorySettings[sport].filters = {
-                            ...DEFAULT_FILTERS,
-                            ...categorySettings[sport].filters
-                        };
+                        const existingFilters = categorySettings[sport].filters || {};
+                        categorySettings[sport].filters = {...DEFAULT_FILTERS};
+                        
+                        Object.keys(existingFilters).forEach(filter => {
+                            if (categorySettings[sport].filters.hasOwnProperty(filter)) {
+                                categorySettings[sport].filters[filter] = existingFilters[filter];
+                            }
+                        });
                     }
                     if (!categorySettings[sport].customFilters) {
                         categorySettings[sport].customFilters = {};
                     }
                 }
             });
-
+    
             currentCategory = GM_getValue('betsure_currentCategory') || 'Todos';
             if (!SPORTS_LIST.includes(currentCategory) && !Object.keys(categorySettings).includes(currentCategory)) {
                 currentCategory = 'Todos';
@@ -585,21 +589,21 @@
             };
         });
         currentCategory = 'Todos';
-
+    
         try {
             GM_deleteValue('betsure_categorySettings');
             GM_deleteValue('betsure_currentCategory');
         } catch (error) {
             console.error('Erro ao resetar dados:', error);
         }
-
+    
         saveSettings();
-
+    
         if (document.getElementById('category-list')) {
             updateCategoryList();
             updateCategoryContent();
         }
-
+    
         GM_notification({
             title: 'BetSure Utils',
             text: 'Configurações resetadas com sucesso!',

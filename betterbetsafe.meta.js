@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterSafe by Zeus
 // @namespace    http://github.com/ZeusHay/BetterSafe
-// @version      1.6
+// @version      1.0.1
 // @description  Filtro avançado para apostas no BetSafe com interface personalizada por categorias e interatividade melhorada
 // @author       Zeus
 // @match        https://betsafepro.com.br/*
