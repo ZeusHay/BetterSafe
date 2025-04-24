@@ -1035,7 +1035,7 @@
         });
 
         const versionInfo = document.createElement('div');
-        versionInfo.textContent = 'Versão 1.5';
+        versionInfo.textContent = 'Versão 1.0.1';
         versionInfo.style.marginTop = '20px';
         versionInfo.style.fontSize = '12px';
         versionInfo.style.color = THEME.textSecondary;
