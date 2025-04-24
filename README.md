@@ -25,7 +25,7 @@ Filtro avançado para apostas no BetSafe com interface personalizada por categor
 
 ### Método 1: Instalação Direta (Recomendado)
 
-1. Após instalar o Tampermonkey, [clique aqui](https://github.com/ZeusHay/BetterSafe/raw/refs/heads/main/betterbetsafe.user.js) para instalar o script
+1. Após instalar o Tampermonkey, [clique aqui](https://github.com/ZeusHay/BetterSafe/raw/main/betterbetsafe.user.js) para instalar o script
 2. O Tampermonkey irá detectar o arquivo e abrir uma janela de instalação
 3. Clique em "Instalar"
 
@@ -34,7 +34,7 @@ Filtro avançado para apostas no BetSafe com interface personalizada por categor
 1. Após instalar o Tampermonkey, clique no ícone da extensão na barra de ferramentas do navegador
 2. Selecione "Adicionar novo script"
 3. Apague todo o conteúdo do editor
-4. Copie e cole o conteúdo do arquivo [betterbetsafe.user.js](https://github.com/seu-usuario/BetterSafe-by-Zeus/blob/main/betterbetsafe.user.js)
+4. Copie e cole o conteúdo do arquivo [betterbetsafe.user.js](https://github.com/ZeusHay/BetterSafe/blob/main/betterbetsafe.user.js)
 5. Pressione Ctrl+S para salvar
 
 ## Como Usar
