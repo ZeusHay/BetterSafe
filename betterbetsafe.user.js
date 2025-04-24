@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         BetterSafe by Zeus
-// @namespace    http://github.com/seu-usuario/BetterSafe-by-Zeus
+// @namespace    http://github.com/ZeusHay/BetterSafe
 // @version      1.5
 // @description  Filtro avançado para apostas no BetSafe com interface personalizada por categorias e interatividade melhorada
 // @author       Zeus
 // @match        https://betsafepro.com.br/*
 // @license      GPL-3.0
-// @updateURL    https://github.com/seu-usuario/BetterSafe-by-Zeus/raw/main/betterbetsafe.meta.js
-// @downloadURL  https://github.com/seu-usuario/BetterSafe-by-Zeus/raw/main/betterbetsafe.user.js
+// @updateURL    https://github.com/ZeusHay/BetterSafe/raw/main/betterbetsafe.meta.js
+// @downloadURL  https://github.com/ZeusHay/BetterSafe/raw/main/betterbetsafe.user.js
 // @grant        GM_notification
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -21,7 +21,7 @@
     'use strict';
 
     const CURRENT_VERSION = '1.5';
-    const VERSION_CHECK_URL = 'https://github.com/seu-usuario/BetterSafe-by-Zeus/raw/main/betterbetsafe.version.json';
+    const VERSION_CHECK_URL = 'https://github.com/ZeusHay/BetterSafe/raw/main/betterbetsafe.version.json';
 
     const SPORTS_LIST = [
         'Todos',
@@ -479,7 +479,7 @@
             if (versionInfo.downloadUrl) {
                 window.location.href = versionInfo.downloadUrl;
             } else {
-                GM_openInTab('https://github.com/seu-usuario/BetterSafe-by-Zeus/raw/main/betterbetsafe.user.js');
+                GM_openInTab('https://github.com/ZeusHay/BetterSafe/raw/refs/heads/main/betterbetsafe.user.js');
             }
         });
     }
