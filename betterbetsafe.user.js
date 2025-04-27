@@ -4,7 +4,7 @@
 // @version      1.1.0
 // @description  Filtro avançado para apostas no BetSafe com interface personalizada por categorias, combinações de casas de apostas e interatividade melhorada
 // @author       Zeus
-// @match        https://betsafepro.com.br/*
+// @match        https://betsafy.com.br/*
 // @license      GPL-3.0
 // @updateURL    https://github.com/ZeusHay/BetterSafe/raw/main/betterbetsafe.meta.js
 // @downloadURL  https://github.com/ZeusHay/BetterSafe/raw/main/betterbetsafe.user.js
@@ -2447,7 +2447,7 @@
             adjustmentInfo.classList.add('visible');
 
             if (profitHouse1 < profitHouse2) {
-                const idealHouse1Amount = (house2Amount * house2Odd - house1Amount) / (house1Odd - 1);
+                const idealHouse1Amount = (house2Amount * house2Odd) / house1Odd;
                 const additionalAmount = Math.max(0, idealHouse1Amount - house1Amount);
                 const newHouse1Amount = house1Amount + additionalAmount;
                 const newTotalAmount = newHouse1Amount + house2Amount;
@@ -2458,22 +2458,27 @@
                 const noLossAdditionalAmount = Math.max(0, noLossHouse1Amount - house1Amount);
 
                 adjustmentInfo.innerHTML = `
-                    <div class="equalize">Para lucros iguais, FALTAM R$ ${additionalAmount.toFixed(2)} [R$ ${newTotalAmount.toFixed(2)}] na Casa 1 para ter o lucro de R$ ${expectedProfit.toFixed(2)} (${expectedProfitPercent.toFixed(2)}%)</div>
-                    <div class="no-loss">Para evitar perdas, FALTAM R$ ${noLossAdditionalAmount.toFixed(2)} [R$ ${(totalInvestment + noLossAdditionalAmount).toFixed(2)}] na Casa 1</div>
+                    <div class="equalize">Para lucros iguais, FALTAM R$ ${additionalAmount.toFixed(2)} [R$ ${(house1Amount + additionalAmount).toFixed(2)}] na Casa 1 para ter o lucro de R$ ${expectedProfit.toFixed(2)} (${expectedProfitPercent.toFixed(2)}%)</div>
                 `;
+                const arbitragePercentage = (1/house1Odd + 1/house2Odd) * 100;
+                if (arbitragePercentage < 100) {
+                    adjustmentInfo.innerHTML += `
+                        <div class="no-loss">Para evitar perdas, FALTAM R$ ${noLossAdditionalAmount.toFixed(2)} [R$ ${(house1Amount + noLossAdditionalAmount).toFixed(2)}] na Casa 1</div>
+                    `;
+                }
             } else if (profitHouse2 < profitHouse1) {
-                const idealHouse2Amount = (house1Amount * house1Odd - house2Amount) / (house2Odd - 1);
+                const idealHouse2Amount = (house1Amount * house1Odd) / house2Odd;
                 const additionalAmount = Math.max(0, idealHouse2Amount - house2Amount);
                 const newHouse2Amount = house2Amount + additionalAmount;
                 const newTotalAmount = house1Amount + newHouse2Amount;
                 const expectedProfit = (newHouse2Amount * house2Odd) - newTotalAmount;
                 const expectedProfitPercent = (expectedProfit / newTotalAmount) * 100;
 
-                const noLossHouse2Amount = totalInvestment / house2Odd;
+                const noLossHouse2Amount = totalInvestment / house2Odd;  // ESTA LINHA ESTÁ INCORRETA
                 const noLossAdditionalAmount = Math.max(0, noLossHouse2Amount - house2Amount);
 
                 adjustmentInfo.innerHTML = `
-                    <div class="equalize">Para lucros iguais, FALTAM R$ ${additionalAmount.toFixed(2)} [R$ ${newTotalAmount.toFixed(2)}] na Casa 2 para ter o lucro de R$ ${expectedProfit.toFixed(2)} (${expectedProfitPercent.toFixed(2)}%)</div>
+                    <div class="equalize">Para lucros iguais, FALTAM R$ ${additionalAmount.toFixed(2)} [R$ ${(house2Amount + additionalAmount).toFixed(2)}] na Casa 2 para ter o lucro de R$ ${expectedProfit.toFixed(2)} (${expectedProfitPercent.toFixed(2)}%)</div>
                     <div class="no-loss">Para evitar perdas, FALTAM R$ ${noLossAdditionalAmount.toFixed(2)} [R$ ${(totalInvestment + noLossAdditionalAmount).toFixed(2)}] na Casa 2</div>
                 `;
             }
@@ -2550,13 +2555,12 @@
             const missingForOriginalProfit = house2Amount - actualAmount;
             const currentTotalInvestment = house1Amount + actualAmount;
 
-            const minRequiredHouse2 = currentTotalInvestment / house2Odd;
-            const additionalForNoLoss = Math.max(0, minRequiredHouse2 - actualAmount);
-            const newTotalWithNoLoss = house1Amount + actualAmount + additionalForNoLoss;
+            const noLossHouse2Amount = house1Amount / (house2Odd - 1);
+            const noLossAdditionalAmount = Math.max(0, noLossHouse2Amount - house2Amount);
 
             complementaryInfo.innerHTML = `
                 <div class="equalize">Para manter o lucro original de R$ ${originalProfitIfHouse2Wins.toFixed(2)} (${originalPercent.toFixed(2)}%), FALTAM R$ ${missingForOriginalProfit.toFixed(2)} na Casa 2</div>
-                <div class="no-loss">Para evitar perdas, FALTAM R$ ${additionalForNoLoss.toFixed(2)} [R$ ${newTotalWithNoLoss.toFixed(2)}] na Casa 2</div>
+                <div class="no-loss">Para evitar perdas, FALTAM R$ ${noLossAdditionalAmount.toFixed(2)} [R$ ${(house2Amount + noLossAdditionalAmount).toFixed(2)}] na Casa 2</div>
             `;
         }
 
